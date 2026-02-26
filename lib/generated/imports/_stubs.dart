@@ -8,3 +8,5 @@
 
 dynamic CounterWidget;
 typedef CounterWidgetOrStubbed = dynamic;
+dynamic FlutterUpdaterOverlay;
+typedef FlutterUpdaterOverlayOrStubbed = dynamic;

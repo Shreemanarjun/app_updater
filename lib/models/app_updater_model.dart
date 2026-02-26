@@ -1,5 +1,3 @@
-import 'package:jaspr/jaspr.dart';
-
 class AppUpdaterModel {
   final PlatformConfig android;
   final PlatformConfig ios;
