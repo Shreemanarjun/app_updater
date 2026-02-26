@@ -13,7 +13,7 @@ class App extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(classes: 'main', [
+    return div(classes: 'flex flex-col h-screen overflow-hidden bg-zinc-950 text-white font-inter', [
       const Header(),
       Router(
         routes: [
@@ -26,20 +26,9 @@ class App extends StatelessComponent {
 
   @css
   static List<StyleRule> get styles => [
-    ...Header.styles,
-    ...GeneratorPage.styles,
     ...EmbeddedUpdaterOverlay.styles,
-    css('.main', [
-      css('&').styles(
-        display: Display.flex,
-        height: 100.vh,
-        overflow: Overflow.hidden,
-        flexDirection: FlexDirection.column,
-      ),
-    ]),
     css('body').styles(
-      margin: Margin.zero,
-      fontFamily: FontFamily('Inter'),
+      fontFamily: FontFamily('Inter, sans-serif'),
     ),
   ];
 }

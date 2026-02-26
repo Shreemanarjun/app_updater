@@ -7,6 +7,7 @@
 import 'package:jaspr/client.dart';
 
 import 'package:app_updater/pages/about.dart' deferred as _about;
+import 'package:app_updater/pages/generator.dart' deferred as _generator;
 
 /// Default [ClientOptions] for use with your Jaspr project.
 ///
@@ -27,5 +28,9 @@ import 'package:app_updater/pages/about.dart' deferred as _about;
 ClientOptions get defaultClientOptions => ClientOptions(
   clients: {
     'about': ClientLoader((p) => _about.About(), loader: _about.loadLibrary),
+    'generator': ClientLoader(
+      (p) => _generator.GeneratorPage(),
+      loader: _generator.loadLibrary,
+    ),
   },
 );

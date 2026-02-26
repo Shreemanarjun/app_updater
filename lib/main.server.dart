@@ -32,16 +32,9 @@ void main() {
           'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap',
         ),
         css.import('https://fonts.googleapis.com/icon?family=Material+Icons'),
-        css('html, body').styles(
-          width: 100.percent,
-          minHeight: 100.vh,
-          padding: Padding.zero,
-          margin: Margin.zero,
-          color: Color.rgba(255, 255, 255, 1.0),
-          backgroundColor: Color.rgb(9, 9, 11),
-        ),
       ],
       head: [
+        link(rel: 'stylesheet', href: 'styles.css'),
         link(rel: 'manifest', href: 'manifest.json'),
         script(src: "flutter_bootstrap.js", async: true),
       ],

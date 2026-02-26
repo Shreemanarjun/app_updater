@@ -17,33 +17,43 @@ class FlutterUpdaterOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     final isFullscreen = config.type == UpdaterOverlayType.killSwitch || config.type == UpdaterOverlayType.maintenance;
 
-    return Theme(
-      data: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF09090B),
-        cardColor: const Color(0xFF18181B),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: [
-            // Backdrop
-            GestureDetector(
-              onTap: config.isPermanent ? null : onClose,
-              child: Container(
-                color: Colors.black.withValues(alpha: 0.3),
-              ),
-            ),
-            // Content
-            Center(
-              child: isFullscreen
-                  ? _FullscreenOverlay(config: config)
-                  : _DialogOverlay(
-                      config: config,
-                      onClose: onClose,
-                      onAction: onAction,
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Theme(
+        data: ThemeData.dark().copyWith(
+          cardColor: const Color(0xFF18181B),
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final w = constraints.maxWidth.isFinite ? constraints.maxWidth : 300.0;
+            final h = constraints.maxHeight.isFinite ? constraints.maxHeight : 580.0;
+            return SizedBox(
+              width: w,
+              height: h,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  // Semi-transparent backdrop
+                  GestureDetector(
+                    onTap: config.isPermanent ? null : onClose,
+                    child: Container(
+                      color: Colors.black.withValues(alpha: 0.45),
                     ),
-            ),
-          ],
+                  ),
+                  // Overlay content
+                  isFullscreen
+                      ? _FullscreenOverlay(config: config)
+                      : Center(
+                          child: _DialogOverlay(
+                            config: config,
+                            onClose: onClose,
+                            onAction: onAction,
+                          ),
+                        ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

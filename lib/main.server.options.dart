@@ -30,12 +30,16 @@ import 'package:app_updater/app.dart' as _app;
 /// ```
 ServerOptions get defaultServerOptions => ServerOptions(
   clientId: 'main.client.dart.js',
-  clients: {_about.About: ClientTarget<_about.About>('about')},
+  clients: {
+    _about.About: ClientTarget<_about.About>('about'),
+    _generator.GeneratorPage: ClientTarget<_generator.GeneratorPage>(
+      'generator',
+    ),
+  },
   styles: () => [
     ..._embedded_updater_overlay.EmbeddedUpdaterOverlay.styles,
     ..._header.Header.styles,
     ..._about.About.styles,
-    ..._generator.GeneratorPage.styles,
     ..._app.App.styles,
   ],
 );
