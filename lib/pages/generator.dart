@@ -401,8 +401,16 @@ class _GeneratorPageState extends State<GeneratorPage> {
               hint: '',
               type: InputType.number,
               value: latestBuild.toString(),
-              onChange: (v) =>
-                  os == 'android' ? _andLatestBuild = int.tryParse(v) ?? 0 : _iosLatestBuild = int.tryParse(v) ?? 0,
+              onChange: (v) {
+                final val = int.tryParse(v) ?? 0;
+                if (os == 'android') {
+                  _andLatestBuild = val;
+                  _andFlexibleBelowBuild = val;
+                } else {
+                  _iosLatestBuild = val;
+                  _iosFlexibleBelowBuild = val;
+                }
+              },
             ),
             _field(
               label: 'Min SemVer',
@@ -415,8 +423,16 @@ class _GeneratorPageState extends State<GeneratorPage> {
               hint: '',
               type: InputType.number,
               value: minBuild.toString(),
-              onChange: (v) =>
-                  os == 'android' ? _andMinBuild = int.tryParse(v) ?? 0 : _iosMinBuild = int.tryParse(v) ?? 0,
+              onChange: (v) {
+                final val = int.tryParse(v) ?? 0;
+                if (os == 'android') {
+                  _andMinBuild = val;
+                  _andForceBelowBuild = val;
+                } else {
+                  _iosMinBuild = val;
+                  _iosForceBelowBuild = val;
+                }
+              },
             ),
           ]),
         ],
