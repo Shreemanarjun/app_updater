@@ -6,7 +6,10 @@
 
 import 'package:jaspr/client.dart';
 
-import 'package:app_updater/pages/about.dart' deferred as _about;
+import 'package:app_updater/components/theme_manager.dart'
+    deferred as _theme_manager;
+import 'package:app_updater/components/theme_toggle.dart'
+    deferred as _theme_toggle;
 import 'package:app_updater/pages/generator.dart' deferred as _generator;
 
 /// Default [ClientOptions] for use with your Jaspr project.
@@ -27,7 +30,14 @@ import 'package:app_updater/pages/generator.dart' deferred as _generator;
 /// ```
 ClientOptions get defaultClientOptions => ClientOptions(
   clients: {
-    'about': ClientLoader((p) => _about.About(), loader: _about.loadLibrary),
+    'theme_manager': ClientLoader(
+      (p) => _theme_manager.ThemeManager(),
+      loader: _theme_manager.loadLibrary,
+    ),
+    'theme_toggle': ClientLoader(
+      (p) => _theme_toggle.EnhancedThemeToggle(),
+      loader: _theme_toggle.loadLibrary,
+    ),
     'generator': ClientLoader(
       (p) => _generator.GeneratorPage(),
       loader: _generator.loadLibrary,

@@ -6,7 +6,5 @@
 
 // ignore_for_file: directives_ordering, non_constant_identifier_names
 
-dynamic CounterWidget;
-typedef CounterWidgetOrStubbed = dynamic;
 dynamic FlutterUpdaterOverlay;
 typedef FlutterUpdaterOverlayOrStubbed = dynamic;

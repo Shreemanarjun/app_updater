@@ -6,12 +6,14 @@ class FlutterUpdaterOverlay extends StatelessWidget {
     required this.config,
     required this.onClose,
     this.onAction,
+    this.isDark = true,
     super.key,
   });
 
   final UpdaterOverlayConfig config;
   final VoidCallback onClose;
   final VoidCallback? onAction;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +22,15 @@ class FlutterUpdaterOverlay extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Theme(
-        data: ThemeData.dark().copyWith(
-          cardColor: const Color(0xFF18181B),
-        ),
+        data: isDark
+            ? ThemeData.dark().copyWith(
+                cardColor: const Color(0xFF18181B),
+                scaffoldBackgroundColor: const Color(0xFF18181B),
+              )
+            : ThemeData.light().copyWith(
+                cardColor: Colors.white,
+                scaffoldBackgroundColor: const Color(0xFFF4F4F5),
+              ),
         child: LayoutBuilder(
           builder: (context, constraints) {
             final w = constraints.maxWidth.isFinite ? constraints.maxWidth : 300.0;
@@ -71,10 +79,13 @@ class _FullscreenOverlay extends StatelessWidget {
     final color = isKillSwitch ? const Color(0xFFEF4444) : const Color(0xFFF97316);
     final icon = isKillSwitch ? Icons.block : Icons.construction;
 
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: const Color(0xFF18181B),
+      color: theme.scaffoldBackgroundColor,
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -100,9 +111,9 @@ class _FullscreenOverlay extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             config.message,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
-              color: Color(0xFFA1A1AA),
+              color: isDark ? const Color(0xFFA1A1AA) : const Color(0xFF52525B),
               height: 1.5,
             ),
             textAlign: TextAlign.center,
@@ -145,6 +156,9 @@ class _DialogOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     Color iconColor;
     IconData iconData;
 
@@ -166,11 +180,11 @@ class _DialogOverlay extends StatelessWidget {
       margin: const EdgeInsets.all(24),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFF18181B),
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.4),
+            color: isDark ? Colors.black.withValues(alpha: 0.4) : Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -197,10 +211,10 @@ class _DialogOverlay extends StatelessWidget {
                   children: [
                     Text(
                       config.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: isDark ? Colors.white : const Color(0xFF18181B),
                       ),
                     ),
                     if (config.latestVersion != null)
@@ -222,8 +236,8 @@ class _DialogOverlay extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             config.message,
-            style: const TextStyle(
-              color: Color(0xFFA1A1AA),
+            style: TextStyle(
+              color: isDark ? const Color(0xFFA1A1AA) : const Color(0xFF52525B),
               fontSize: 14,
               height: 1.5,
             ),
@@ -235,7 +249,7 @@ class _DialogOverlay extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -265,10 +279,10 @@ class _DialogOverlay extends StatelessWidget {
           if (config.releaseNotes?.isNotEmpty ?? false) ...[
             Text(
               config.type == UpdaterOverlayType.shorebirdPatch ? "Changes:" : "What's New:",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: isDark ? Colors.white : const Color(0xFF18181B),
               ),
             ),
             const SizedBox(height: 8),
@@ -277,9 +291,11 @@ class _DialogOverlay extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.03),
+                color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.black.withValues(alpha: 0.02),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                border: Border.all(
+                  color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
+                ),
               ),
               child: SingleChildScrollView(
                 child: Text(

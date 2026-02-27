@@ -1,7 +1,10 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:jaspr_riverpod/jaspr_riverpod.dart';
 import 'package:jaspr_flutter_embed/jaspr_flutter_embed.dart';
+import 'package:universal_web/web.dart' as web;
 import '../models/updater_config.dart';
+import '../theme_mode.dart';
 
 @Import.onWeb('../widgets/updater_overlay.dart', show: [#FlutterUpdaterOverlay])
 import 'embedded_updater_overlay.imports.dart' deferred as flutter_overlay;
@@ -24,6 +27,13 @@ class EmbeddedUpdaterOverlay extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
+    var themeMode = context.watch(themeProvider);
+    bool isDark = switch (themeMode) {
+      ThemeMode.dark => true,
+      ThemeMode.light => false,
+      ThemeMode.auto => kIsWeb ? web.window.matchMedia('(prefers-color-scheme: dark)').matches : true,
+    };
+
     return FlutterEmbedView.deferred(
       classes: 'overlay-view',
       constraints: ViewConstraints(
@@ -54,6 +64,7 @@ class EmbeddedUpdaterOverlay extends StatelessComponent {
         config: config,
         onClose: onClose,
         onAction: onAction,
+        isDark: isDark,
       ),
     );
   }
@@ -62,10 +73,10 @@ class EmbeddedUpdaterOverlay extends StatelessComponent {
   static List<StyleRule> get styles => [
     // Position overlay to fill phone shell
     css('.overlay-view').styles(
-      height: 100.percent,
       position: Position.absolute(top: 0.px, left: 0.px),
-      width: 100.percent,
       zIndex: ZIndex(10),
+      width: 100.percent,
+      height: 100.percent,
     ),
   ];
 }

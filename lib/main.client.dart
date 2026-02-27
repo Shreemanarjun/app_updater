@@ -10,6 +10,8 @@ import 'package:jaspr/client.dart';
 // This file is generated automatically by Jaspr, do not remove or edit.
 import 'main.client.options.dart';
 
+import 'package:jaspr_riverpod/jaspr_riverpod.dart';
+
 void main() {
   // Initializes the client environment with the generated default options.
   Jaspr.initializeApp(
@@ -23,6 +25,8 @@ void main() {
   // You can wrap this with additional [InheritedComponent]s to share state across multiple
   // @client components if needed.
   runApp(
-    const ClientApp(),
+    const ProviderScope(
+      child: ClientApp(),
+    ),
   );
 }

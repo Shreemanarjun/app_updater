@@ -228,12 +228,12 @@ class _GeneratorPageState extends State<GeneratorPage> {
     required void Function(String) onChange,
   }) {
     return div(classes: 'flex flex-col gap-1', [
-      span(classes: 'text-xs text-zinc-400 font-medium', [Component.text(label)]),
+      span(classes: 'text-xs text-zinc-600 dark:text-zinc-400 font-medium', [Component.text(label)]),
       input(
         type: type,
         value: value,
         classes:
-            'bg-zinc-800 text-white text-sm rounded-lg px-3 py-2 w-full outline-none focus:ring-1 focus:ring-blue-500/50 placeholder-zinc-600 border-0',
+            'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm rounded-lg px-3 py-2 w-full outline-none focus:ring-1 focus:ring-blue-500/50 placeholder-zinc-400 dark:placeholder-zinc-600 border-0',
         events: {
           'input': (e) {
             onChange((e.target as dynamic).value as String);
@@ -252,12 +252,12 @@ class _GeneratorPageState extends State<GeneratorPage> {
   }) {
     return div(classes: 'flex items-center justify-between py-2', [
       div(classes: 'flex flex-col', [
-        span(classes: 'text-sm text-white font-medium', [Component.text(label)]),
-        span(classes: 'text-xs text-zinc-500', [Component.text(hint)]),
+        span(classes: 'text-sm text-zinc-900 dark:text-white font-medium', [Component.text(label)]),
+        span(classes: 'text-xs text-zinc-500 dark:text-zinc-400', [Component.text(hint)]),
       ]),
       button(
         classes:
-            'w-11 h-6 rounded-full relative transition-colors border-0 cursor-pointer ${value ? "bg-blue-600" : "bg-zinc-700"}',
+            'w-11 h-6 rounded-full relative transition-colors border-0 cursor-pointer ${value ? "bg-blue-600" : "bg-zinc-200 dark:bg-zinc-700"}',
         events: {
           'click': (e) {
             onChange(!value);
@@ -276,7 +276,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
   }
 
   Component _section({required String title, required List<Component> children}) {
-    return div(classes: 'flex flex-col gap-4 border-b border-white/5 pb-6 mb-2', [
+    return div(classes: 'flex flex-col gap-4 border-b border-zinc-200 dark:border-white/5 pb-6 mb-2', [
       h3(classes: 'text-[11px] font-bold text-zinc-500 uppercase tracking-widest m-0', [Component.text(title)]),
       ...children,
     ]);
@@ -326,10 +326,12 @@ class _GeneratorPageState extends State<GeneratorPage> {
         title: 'Release Notes',
         children: [
           div(classes: 'flex flex-col gap-1', [
-            span(classes: 'text-xs text-zinc-400 font-medium', [Component.text('Release Notes (EN)')]),
+            span(classes: 'text-xs text-zinc-600 dark:text-zinc-400 font-medium', [
+              Component.text('Release Notes (EN)'),
+            ]),
             textarea(
               classes:
-                  'bg-zinc-800 text-white text-sm rounded-lg px-3 py-2 w-full outline-none focus:ring-1 focus:ring-blue-500/50 placeholder-zinc-600 border-0 h-32 resize-none',
+                  'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm rounded-lg px-3 py-2 w-full outline-none focus:ring-1 focus:ring-blue-500/50 placeholder-zinc-400 dark:placeholder-zinc-600 border-0 h-32 resize-none',
               events: {
                 'input': (e) {
                   _releaseNotes = (e.target as dynamic).value as String;
@@ -484,27 +486,27 @@ class _GeneratorPageState extends State<GeneratorPage> {
       [
         // Backdrop
         div(
-          classes: 'absolute inset-0 bg-black/60 backdrop-blur-sm',
+          classes: 'absolute inset-0 bg-zinc-900/40 dark:bg-slate-800 dark:bg-black/60 backdrop-blur-sm',
           events: {'click': (e) => setState(() => _showGenerateModal = false)},
           [],
         ),
         // Modal card
         div(
           classes:
-              'relative z-10 bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden',
+              'relative z-10 bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden',
           [
             // Header
-            div(classes: 'flex items-center justify-between px-5 py-4 border-b border-white/5', [
+            div(classes: 'flex items-center justify-between px-5 py-4 border-b border-zinc-200 dark:border-white/5', [
               div(classes: 'flex items-center gap-2', [
                 i(classes: 'material-icons text-emerald-400 text-[18px]', [Component.text('code')]),
-                span(classes: 'text-white font-semibold', [Component.text('Generated JSON Config')]),
+                span(classes: 'text-zinc-900 dark:text-white font-semibold', [Component.text('Generated JSON Config')]),
               ]),
               div(classes: 'flex items-center gap-2', [
                 // Copy button
                 button(
                   classes: _copied
                       ? 'flex items-center gap-1.5 text-xs font-semibold text-emerald-400 px-3 py-1.5 rounded-lg bg-emerald-500/10 border-0 cursor-pointer transition-all'
-                      : 'flex items-center gap-1.5 text-xs font-semibold text-zinc-300 hover:text-white px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border-0 cursor-pointer transition-all',
+                      : 'flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:text-white px-3 py-1.5 rounded-lg bg-zinc-200 dark:bg-white/5 hover:bg-zinc-300 dark:bg-white/10 border-0 cursor-pointer transition-all',
                   events: {
                     'click': (e) async {
                       // Copy to clipboard via JS interop
@@ -524,7 +526,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
                 ),
                 // Close
                 button(
-                  classes: 'text-zinc-500 hover:text-white border-0 bg-transparent cursor-pointer',
+                  classes: 'text-zinc-500 hover:text-zinc-900 dark:text-white border-0 bg-transparent cursor-pointer',
                   events: {'click': (e) => setState(() => _showGenerateModal = false)},
                   [
                     i(classes: 'material-icons', [Component.text('close')]),
@@ -534,16 +536,17 @@ class _GeneratorPageState extends State<GeneratorPage> {
             ]),
             // JSON body
             div(classes: 'p-5 flex flex-col gap-4', [
-              p(classes: 'text-xs text-zinc-500 m-0', [
+              p(classes: 'text-xs text-zinc-500 dark:text-zinc-400 m-0', [
                 Component.text(
                   'This JSON reflects your current configuration. Deploy it as your remote config payload.',
                 ),
               ]),
               div(
-                classes: 'relative rounded-xl overflow-hidden bg-zinc-950 border border-white/5',
+                classes:
+                    'relative rounded-xl overflow-hidden bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/5',
                 [
                   pre(
-                    classes: 'text-zinc-300 text-xs font-mono p-4 overflow-auto max-h-[480px] m-0',
+                    classes: 'text-zinc-700 dark:text-zinc-300 text-xs font-mono p-4 overflow-auto max-h-[480px] m-0',
                     [Component.text(prettyJson)],
                   ),
                 ],
@@ -563,23 +566,23 @@ class _GeneratorPageState extends State<GeneratorPage> {
       [
         // Backdrop
         div(
-          classes: 'absolute inset-0 bg-black/60 backdrop-blur-sm',
+          classes: 'absolute inset-0 bg-zinc-900/40 dark:bg-slate-800 dark:bg-black/60 backdrop-blur-sm',
           events: {'click': (e) => setState(() => _showJsonModal = false)},
           [],
         ),
         // Modal card
         div(
           classes:
-              'relative z-10 bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden',
+              'relative z-10 bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden',
           [
             // Header
-            div(classes: 'flex items-center justify-between px-5 py-4 border-b border-white/5', [
+            div(classes: 'flex items-center justify-between px-5 py-4 border-b border-zinc-200 dark:border-white/5', [
               div(classes: 'flex items-center gap-2', [
                 i(classes: 'material-icons text-blue-400 text-[18px]', [Component.text('data_object')]),
-                span(classes: 'text-white font-semibold', [Component.text('Paste JSON Config')]),
+                span(classes: 'text-zinc-900 dark:text-white font-semibold', [Component.text('Paste JSON Config')]),
               ]),
               button(
-                classes: 'text-zinc-500 hover:text-white border-0 bg-transparent cursor-pointer',
+                classes: 'text-zinc-500 hover:text-zinc-900 dark:text-white border-0 bg-transparent cursor-pointer',
                 events: {'click': (e) => setState(() => _showJsonModal = false)},
                 [
                   i(classes: 'material-icons', [Component.text('close')]),
@@ -588,7 +591,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
             ]),
             // Body
             div(classes: 'p-5 flex flex-col gap-4', [
-              p(classes: 'text-sm text-zinc-400 m-0', [
+              p(classes: 'text-sm text-zinc-600 dark:text-zinc-400 m-0', [
                 Component.text(
                   'Paste your full JSON config below. All form fields will be updated when you click Apply.',
                 ),
@@ -596,8 +599,8 @@ class _GeneratorPageState extends State<GeneratorPage> {
               div(classes: 'relative', [
                 textarea(
                   classes: _jsonError.isEmpty
-                      ? 'w-full h-64 bg-zinc-800 text-zinc-200 text-sm font-mono p-3 rounded-xl border-0 outline-none resize-none'
-                      : 'w-full h-64 bg-red-500/5 text-zinc-200 text-sm font-mono p-3 rounded-xl border border-red-500/30 outline-none resize-none',
+                      ? 'w-full h-64 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-sm font-mono p-3 rounded-xl border-0 outline-none resize-none'
+                      : 'w-full h-64 bg-red-500/5 text-zinc-800 dark:text-zinc-200 text-sm font-mono p-3 rounded-xl border border-red-500/30 outline-none resize-none',
                   events: {
                     'input': (e) => setState(() => _jsonDraft = (e.target as dynamic).value as String),
                   },
@@ -614,13 +617,14 @@ class _GeneratorPageState extends State<GeneratorPage> {
               ]),
               div(classes: 'flex justify-end gap-2', [
                 button(
-                  classes: 'px-4 py-2 text-sm text-zinc-400 hover:text-white bg-transparent border-0 cursor-pointer',
+                  classes:
+                      'px-4 py-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-white bg-transparent border-0 cursor-pointer',
                   events: {'click': (e) => setState(() => _showJsonModal = false)},
                   [Component.text('Cancel')],
                 ),
                 button(
                   classes:
-                      'px-5 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl border-0 cursor-pointer transition-colors',
+                      'px-5 py-2 text-sm font-semibold text-zinc-900 dark:text-white bg-blue-600 hover:bg-blue-500 rounded-xl border-0 cursor-pointer transition-colors',
                   events: {
                     'click': (e) {
                       try {
@@ -652,218 +656,240 @@ class _GeneratorPageState extends State<GeneratorPage> {
   Component build(BuildContext context) {
     final overlay = _overlay();
 
-    return div(classes: 'flex flex-1 min-h-0 bg-zinc-950 relative', [
+    return div(classes: 'flex flex-1 min-h-0 bg-transparent text-inherit font-sans relative', [
       // ══════════════════════════════════════
       // LEFT — Config Form Panel
       // ══════════════════════════════════════
-      div(classes: 'flex flex-col w-[420px] flex-shrink-0 bg-[#0c0c0e] border-r border-white/5', [
-        // ─── Panel header
-        div(classes: 'flex items-center justify-between px-4 py-3 border-b border-white/5 flex-shrink-0', [
-          span(classes: 'text-white font-semibold text-sm', [Component.text('Configuration')]),
-          div(classes: 'flex items-center gap-2', [
-            // Generate JSON button
-            button(
+      div(
+        classes:
+            'flex flex-col w-[420px] flex-shrink-0 bg-gray-50 dark:bg-[#0c0c0e] border-r border-zinc-200 dark:border-white/5',
+        [
+          // ─── Panel header
+          div(
+            classes:
+                'flex items-center justify-between px-4 py-3 border-b border-zinc-200 dark:border-white/5 flex-shrink-0',
+            [
+              span(classes: 'text-zinc-900 dark:text-white font-semibold text-sm', [Component.text('Configuration')]),
+              div(classes: 'flex items-center gap-2', [
+                // Generate JSON button
+                button(
+                  classes:
+                      'flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/15 border-0 cursor-pointer transition-colors',
+                  events: {
+                    'click': (e) => setState(() {
+                      _showGenerateModal = true;
+                      _copied = false;
+                    }),
+                  },
+                  [
+                    i(classes: 'material-icons text-[13px]', [Component.text('download')]),
+                    Component.text('Generate JSON'),
+                  ],
+                ),
+                // Paste JSON button
+                button(
+                  classes:
+                      'flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-white px-3 py-1.5 rounded-lg bg-zinc-200 dark:bg-white/5 hover:bg-zinc-300 dark:bg-white/10 border-0 cursor-pointer transition-colors',
+                  events: {
+                    'click': (e) => setState(() {
+                      _showJsonModal = true;
+                      _jsonDraft = const JsonEncoder.withIndent('  ').convert(_model.toJson());
+                      _jsonError = '';
+                    }),
+                  },
+                  [
+                    i(classes: 'material-icons text-[13px]', [Component.text('data_object')]),
+                    Component.text('Paste JSON'),
+                  ],
+                ),
+              ]),
+            ],
+          ),
+
+          // ─── Tab bar
+          div(classes: 'flex p-2 flex-shrink-0', [
+            div(
               classes:
-                  'flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/15 border-0 cursor-pointer transition-colors',
-              events: {
-                'click': (e) => setState(() {
-                  _showGenerateModal = true;
-                  _copied = false;
-                }),
-              },
+                  'flex p-1 bg-zinc-200 dark:bg-white/5 rounded-xl w-full border border-zinc-200 dark:border-white/5',
               [
-                i(classes: 'material-icons text-[13px]', [Component.text('download')]),
-                Component.text('Generate JSON'),
-              ],
-            ),
-            // Paste JSON button
-            button(
-              classes:
-                  'flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border-0 cursor-pointer transition-colors',
-              events: {
-                'click': (e) => setState(() {
-                  _showJsonModal = true;
-                  _jsonDraft = const JsonEncoder.withIndent('  ').convert(_model.toJson());
-                  _jsonError = '';
-                }),
-              },
-              [
-                i(classes: 'material-icons text-[13px]', [Component.text('data_object')]),
-                Component.text('Paste JSON'),
+                button(
+                  classes:
+                      'flex-1 flex items-center justify-center gap-2 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all border-0 cursor-pointer ${_tab == 'global' ? "bg-zinc-300 dark:bg-white/10 text-zinc-900 dark:text-white shadow-sm" : "bg-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"}',
+                  events: {'click': (e) => setState(() => _tab = 'global')},
+                  [
+                    i(classes: 'material-icons text-[14px]', [Component.text('public')]),
+                    Component.text('Global'),
+                  ],
+                ),
+                button(
+                  classes:
+                      'flex-1 flex items-center justify-center gap-2 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all border-0 cursor-pointer ${_tab == 'android' ? "bg-zinc-300 dark:bg-white/10 text-zinc-900 dark:text-white shadow-sm" : "bg-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"}',
+                  events: {'click': (e) => setState(() => _tab = 'android')},
+                  [
+                    i(classes: 'material-icons text-[14px]', [Component.text('android')]),
+                    Component.text('Android'),
+                  ],
+                ),
+                button(
+                  classes:
+                      'flex-1 flex items-center justify-center gap-2 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all border-0 cursor-pointer ${_tab == 'ios' ? "bg-zinc-300 dark:bg-white/10 text-zinc-900 dark:text-white shadow-sm" : "bg-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"}',
+                  events: {'click': (e) => setState(() => _tab = 'ios')},
+                  [
+                    i(classes: 'material-icons text-[14px]', [Component.text('phone_iphone')]),
+                    Component.text('iOS'),
+                  ],
+                ),
               ],
             ),
           ]),
-        ]),
 
-        // ─── Tab bar
-        div(classes: 'flex p-2 flex-shrink-0', [
-          div(classes: 'flex p-1 bg-white/5 rounded-xl w-full border border-white/5', [
-            button(
-              classes:
-                  'flex-1 flex items-center justify-center gap-2 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all border-0 cursor-pointer ${_tab == 'global' ? "bg-white/10 text-white shadow-sm" : "bg-transparent text-zinc-500 hover:text-zinc-300"}',
-              events: {'click': (e) => setState(() => _tab = 'global')},
-              [
-                i(classes: 'material-icons text-[14px]', [Component.text('public')]),
-                Component.text('Global'),
-              ],
-            ),
-            button(
-              classes:
-                  'flex-1 flex items-center justify-center gap-2 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all border-0 cursor-pointer ${_tab == 'android' ? "bg-white/10 text-white shadow-sm" : "bg-transparent text-zinc-500 hover:text-zinc-300"}',
-              events: {'click': (e) => setState(() => _tab = 'android')},
-              [
-                i(classes: 'material-icons text-[14px]', [Component.text('android')]),
-                Component.text('Android'),
-              ],
-            ),
-            button(
-              classes:
-                  'flex-1 flex items-center justify-center gap-2 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all border-0 cursor-pointer ${_tab == 'ios' ? "bg-white/10 text-white shadow-sm" : "bg-transparent text-zinc-500 hover:text-zinc-300"}',
-              events: {'click': (e) => setState(() => _tab = 'ios')},
-              [
-                i(classes: 'material-icons text-[14px]', [Component.text('phone_iphone')]),
-                Component.text('iOS'),
-              ],
-            ),
+          // ─── Tab Content (scrollable)
+          div(classes: 'flex-1 overflow-y-auto px-6 pb-20 custom-scrollbar', [
+            if (_tab == 'global') _globalForm(),
+            if (_tab == 'android') _platformForm('android'),
+            if (_tab == 'ios') _platformForm('ios'),
           ]),
-        ]),
-
-        // ─── Tab Content (scrollable)
-        div(classes: 'flex-1 overflow-y-auto px-6 pb-20 custom-scrollbar', [
-          if (_tab == 'global') _globalForm(),
-          if (_tab == 'android') _platformForm('android'),
-          if (_tab == 'ios') _platformForm('ios'),
-        ]),
-      ]),
+        ],
+      ),
 
       // ══════════════════════════════════════
       // RIGHT — Device Preview
       // ══════════════════════════════════════
-      div(classes: 'flex-1 flex flex-col min-w-0 bg-[#09090b]', [
+      div(classes: 'flex-1 flex flex-col min-w-0 bg-white dark:bg-zinc-950 overflow-hidden', [
         // ─── Preview Header
-        div(classes: 'flex items-center justify-between px-6 py-4 border-b border-white/5 flex-shrink-0', [
-          span(classes: 'text-white font-semibold', [Component.text('Device Preview')]),
+        div(
+          classes:
+              'flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/5 flex-shrink-0',
+          [
+            span(classes: 'text-zinc-900 dark:text-white font-semibold', [Component.text('Device Preview')]),
 
-          // Preview controls row
-          div(classes: 'flex items-center gap-4', [
-            // ── Size presets
-            div(classes: 'flex gap-1 bg-zinc-900 rounded-lg p-1', [
-              for (final preset in [
-                (label: 'S', w: 320.0, h: 693.0),
-                (label: 'M', w: 375.0, h: 812.0),
-                (label: 'L', w: 430.0, h: 932.0),
-              ])
-                button(
-                  classes: _previewWidth == preset.w && _previewHeight == preset.h
-                      ? 'px-3 py-1 text-xs font-semibold text-white bg-zinc-700/80 rounded-md border-0 cursor-pointer'
-                      : 'px-3 py-1 text-xs font-semibold text-zinc-500 hover:text-zinc-300 bg-transparent rounded-md border-0 cursor-pointer',
-                  events: {
-                    'click': (e) => setState(() {
-                      _previewWidth = preset.w;
-                      _previewHeight = preset.h;
-                    }),
-                  },
-                  [Component.text(preset.label)],
-                ),
-            ]),
+            // Preview controls row
+            div(classes: 'flex items-center gap-4', [
+              // ── Size presets
+              div(classes: 'flex gap-1 bg-zinc-100 dark:bg-zinc-900 rounded-lg p-1', [
+                for (final preset in [
+                  (label: 'S', w: 320.0, h: 693.0),
+                  (label: 'M', w: 375.0, h: 812.0),
+                  (label: 'L', w: 430.0, h: 932.0),
+                ])
+                  button(
+                    classes: _previewWidth == preset.w && _previewHeight == preset.h
+                        ? 'px-3 py-1 text-xs font-semibold text-zinc-900 dark:text-white bg-zinc-200 dark:bg-zinc-200 dark:bg-zinc-700/80 rounded-md border-0 cursor-pointer'
+                        : 'px-3 py-1 text-xs font-semibold text-zinc-500 hover:text-zinc-700 dark:text-zinc-300 bg-transparent rounded-md border-0 cursor-pointer',
+                    events: {
+                      'click': (e) => setState(() {
+                        _previewWidth = preset.w;
+                        _previewHeight = preset.h;
+                      }),
+                    },
+                    [Component.text(preset.label)],
+                  ),
+              ]),
 
-            // ── Custom dimensions (W x H)
-            div(classes: 'flex items-center gap-2', [
-              // Width control
-              div(classes: 'flex items-center bg-zinc-900 rounded-lg overflow-hidden', [
+              // ── Custom dimensions (W x H)
+              div(classes: 'flex items-center gap-2', [
+                // Width control
+                div(classes: 'flex items-center bg-zinc-100 dark:bg-zinc-900 rounded-lg overflow-hidden', [
+                  button(
+                    classes:
+                        'w-7 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:text-white bg-transparent border-0 cursor-pointer hover:bg-zinc-200 dark:bg-white/5 text-[14px]',
+                    events: {'click': (e) => setState(() => _previewWidth = (_previewWidth - 10).clamp(280.0, 800.0))},
+                    [
+                      i(classes: 'material-icons text-[14px]', [Component.text('remove')]),
+                    ],
+                  ),
+                  div(
+                    classes:
+                        'w-16 flex items-center justify-center gap-1.5 border-x border-zinc-200 dark:border-white/5 py-1 text-xs text-zinc-700 dark:text-zinc-300 font-mono',
+                    [
+                      i(classes: 'material-icons text-[12px] text-zinc-500', [Component.text('swap_horiz')]),
+                      Component.text(_previewWidth.toInt().toString()),
+                    ],
+                  ),
+                  button(
+                    classes:
+                        'w-7 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:text-white bg-transparent border-0 cursor-pointer hover:bg-zinc-200 dark:bg-white/5 text-[14px]',
+                    events: {'click': (e) => setState(() => _previewWidth = (_previewWidth + 10).clamp(280.0, 800.0))},
+                    [
+                      i(classes: 'material-icons text-[14px]', [Component.text('add')]),
+                    ],
+                  ),
+                ]),
+                // Height control
+                div(classes: 'flex items-center bg-zinc-100 dark:bg-zinc-900 rounded-lg overflow-hidden', [
+                  button(
+                    classes:
+                        'w-7 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:text-white bg-transparent border-0 cursor-pointer hover:bg-zinc-200 dark:bg-white/5 text-[14px]',
+                    events: {
+                      'click': (e) => setState(() => _previewHeight = (_previewHeight - 10).clamp(400.0, 1200.0)),
+                    },
+                    [
+                      i(classes: 'material-icons text-[14px]', [Component.text('remove')]),
+                    ],
+                  ),
+                  div(
+                    classes:
+                        'w-16 flex items-center justify-center gap-1.5 border-x border-zinc-200 dark:border-white/5 py-1 text-xs text-zinc-700 dark:text-zinc-300 font-mono',
+                    [
+                      i(classes: 'material-icons text-[12px] text-zinc-500', [Component.text('swap_vert')]),
+                      Component.text(_previewHeight.toInt().toString()),
+                    ],
+                  ),
+                  button(
+                    classes:
+                        'w-7 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:text-white bg-transparent border-0 cursor-pointer hover:bg-zinc-200 dark:bg-white/5 text-[14px]',
+                    events: {
+                      'click': (e) => setState(() => _previewHeight = (_previewHeight + 10).clamp(400.0, 1200.0)),
+                    },
+                    [
+                      i(classes: 'material-icons text-[14px]', [Component.text('add')]),
+                    ],
+                  ),
+                ]),
+              ]),
+
+              // ── Platform toggle
+              div(classes: 'flex p-1 bg-zinc-100 dark:bg-zinc-900 rounded-lg', [
                 button(
                   classes:
-                      'w-7 flex items-center justify-center text-zinc-500 hover:text-white bg-transparent border-0 cursor-pointer hover:bg-white/5 text-[14px]',
-                  events: {'click': (e) => setState(() => _previewWidth = (_previewWidth - 10).clamp(280.0, 800.0))},
+                      'px-4 py-1 text-xs font-semibold rounded-md border-0 cursor-pointer transition-colors ${_platform == "android" ? "bg-zinc-300 dark:bg-white/10 text-zinc-900 dark:text-white" : "bg-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"}',
+                  events: {'click': (e) => setState(() => _platform = 'android')},
+                  [Component.text('Android')],
+                ),
+                button(
+                  classes:
+                      'px-4 py-1 text-xs font-semibold rounded-md border-0 cursor-pointer transition-colors ${_platform == "ios" ? "bg-zinc-300 dark:bg-white/10 text-zinc-900 dark:text-white" : "bg-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-300"}',
+                  events: {'click': (e) => setState(() => _platform = 'ios')},
+                  [Component.text('iOS')],
+                ),
+              ]),
+
+              // ── Build control
+              div(classes: 'flex items-center gap-2 bg-zinc-100 dark:bg-zinc-900 pl-3 pr-1 py-1 rounded-lg', [
+                span(classes: 'text-xs text-zinc-500 dark:text-zinc-400', [Component.text('Build:')]),
+                button(
+                  classes:
+                      'w-6 h-6 flex items-center justify-center text-zinc-900 dark:text-white bg-zinc-200 dark:bg-white/5 hover:bg-zinc-300 dark:bg-white/10 rounded border-0 cursor-pointer',
+                  events: {'click': (e) => setState(() => _build = (_build - 1).clamp(0, 999))},
                   [
                     i(classes: 'material-icons text-[14px]', [Component.text('remove')]),
                   ],
                 ),
-                div(
-                  classes:
-                      'w-16 flex items-center justify-center gap-1.5 border-x border-white/5 py-1 text-xs text-zinc-300 font-mono',
-                  [
-                    i(classes: 'material-icons text-[12px] text-zinc-500', [Component.text('swap_horiz')]),
-                    Component.text(_previewWidth.toInt().toString()),
-                  ],
-                ),
+                span(classes: 'text-xs text-zinc-900 dark:text-white font-mono w-6 text-center', [
+                  Component.text('$_build'),
+                ]),
                 button(
                   classes:
-                      'w-7 flex items-center justify-center text-zinc-500 hover:text-white bg-transparent border-0 cursor-pointer hover:bg-white/5 text-[14px]',
-                  events: {'click': (e) => setState(() => _previewWidth = (_previewWidth + 10).clamp(280.0, 800.0))},
+                      'w-6 h-6 flex items-center justify-center text-zinc-900 dark:text-white bg-zinc-200 dark:bg-white/5 hover:bg-zinc-300 dark:bg-white/10 rounded border-0 cursor-pointer',
+                  events: {'click': (e) => setState(() => _build = (_build + 1).clamp(0, 999))},
                   [
                     i(classes: 'material-icons text-[14px]', [Component.text('add')]),
                   ],
                 ),
               ]),
-              // Height control
-              div(classes: 'flex items-center bg-zinc-900 rounded-lg overflow-hidden', [
-                button(
-                  classes:
-                      'w-7 flex items-center justify-center text-zinc-500 hover:text-white bg-transparent border-0 cursor-pointer hover:bg-white/5 text-[14px]',
-                  events: {'click': (e) => setState(() => _previewHeight = (_previewHeight - 10).clamp(400.0, 1200.0))},
-                  [
-                    i(classes: 'material-icons text-[14px]', [Component.text('remove')]),
-                  ],
-                ),
-                div(
-                  classes:
-                      'w-16 flex items-center justify-center gap-1.5 border-x border-white/5 py-1 text-xs text-zinc-300 font-mono',
-                  [
-                    i(classes: 'material-icons text-[12px] text-zinc-500', [Component.text('swap_vert')]),
-                    Component.text(_previewHeight.toInt().toString()),
-                  ],
-                ),
-                button(
-                  classes:
-                      'w-7 flex items-center justify-center text-zinc-500 hover:text-white bg-transparent border-0 cursor-pointer hover:bg-white/5 text-[14px]',
-                  events: {'click': (e) => setState(() => _previewHeight = (_previewHeight + 10).clamp(400.0, 1200.0))},
-                  [
-                    i(classes: 'material-icons text-[14px]', [Component.text('add')]),
-                  ],
-                ),
-              ]),
             ]),
-
-            // ── Platform toggle
-            div(classes: 'flex p-1 bg-zinc-900 rounded-lg', [
-              button(
-                classes:
-                    'px-4 py-1 text-xs font-semibold rounded-md border-0 cursor-pointer transition-colors ${_platform == "android" ? "bg-white/10 text-white" : "bg-transparent text-zinc-500 hover:text-zinc-300"}',
-                events: {'click': (e) => setState(() => _platform = 'android')},
-                [Component.text('Android')],
-              ),
-              button(
-                classes:
-                    'px-4 py-1 text-xs font-semibold rounded-md border-0 cursor-pointer transition-colors ${_platform == "ios" ? "bg-white/10 text-white" : "bg-transparent text-zinc-500 hover:text-zinc-300"}',
-                events: {'click': (e) => setState(() => _platform = 'ios')},
-                [Component.text('iOS')],
-              ),
-            ]),
-
-            // ── Build control
-            div(classes: 'flex items-center gap-2 bg-zinc-900 pl-3 pr-1 py-1 rounded-lg', [
-              span(classes: 'text-xs text-zinc-500', [Component.text('Build:')]),
-              button(
-                classes:
-                    'w-6 h-6 flex items-center justify-center text-white bg-white/5 hover:bg-white/10 rounded border-0 cursor-pointer',
-                events: {'click': (e) => setState(() => _build = (_build - 1).clamp(0, 999))},
-                [
-                  i(classes: 'material-icons text-[14px]', [Component.text('remove')]),
-                ],
-              ),
-              span(classes: 'text-xs text-white font-mono w-6 text-center', [Component.text('$_build')]),
-              button(
-                classes:
-                    'w-6 h-6 flex items-center justify-center text-white bg-white/5 hover:bg-white/10 rounded border-0 cursor-pointer',
-                events: {'click': (e) => setState(() => _build = (_build + 1).clamp(0, 999))},
-                [
-                  i(classes: 'material-icons text-[14px]', [Component.text('add')]),
-                ],
-              ),
-            ]),
-          ]),
-        ]),
+          ],
+        ),
 
         // ─── Preview Canvas
         div(classes: 'flex-1 overflow-auto flex items-center justify-center p-8', [
@@ -897,21 +923,21 @@ class _GeneratorPageState extends State<GeneratorPage> {
               [
                 // Notch
                 div(classes: 'absolute top-0 left-0 right-0 z-10 flex justify-center pt-3', [
-                  div(classes: 'w-24 h-6 bg-black rounded-b-2xl', []),
+                  div(classes: 'w-24 h-6 bg-slate-800 dark:bg-black rounded-b-2xl', []),
                 ]),
                 // Background behind overlay
-                div(classes: 'absolute inset-0 bg-zinc-950 flex flex-col', [
+                div(classes: 'absolute inset-0 bg-white dark:bg-zinc-950 flex flex-col', [
                   // Fake app skeleton
-                  div(classes: 'h-14 border-b border-white/5 flex items-end px-4 pb-3', [
-                    span(classes: 'text-white font-semibold', [Component.text('My App')]),
+                  div(classes: 'h-14 border-b border-zinc-200 dark:border-white/5 flex items-end px-4 pb-3', [
+                    span(classes: 'text-zinc-900 dark:text-white font-semibold', [Component.text('My App')]),
                   ]),
                   div(classes: 'flex flex-col gap-3 p-4 flex-1', [
-                    div(classes: 'h-4 w-32 rounded bg-white/10', []),
-                    div(classes: 'h-20 rounded-xl bg-white/5', []),
-                    div(classes: 'h-4 w-20 rounded bg-white/10', []),
-                    div(classes: 'h-14 rounded-xl bg-white/5', []),
+                    div(classes: 'h-4 w-32 rounded bg-zinc-300 dark:bg-white/10', []),
+                    div(classes: 'h-20 rounded-xl bg-zinc-200 dark:bg-white/5', []),
+                    div(classes: 'h-4 w-20 rounded bg-zinc-300 dark:bg-white/10', []),
+                    div(classes: 'h-14 rounded-xl bg-zinc-200 dark:bg-white/5', []),
                     div(classes: 'h-14 rounded-xl bg-white/[0.03]', []),
-                    div(classes: 'h-4 w-24 rounded bg-white/10', []),
+                    div(classes: 'h-4 w-24 rounded bg-zinc-300 dark:bg-white/10', []),
                     div(classes: 'h-12 rounded-xl bg-white/[0.03]', []),
                   ]),
                 ]),
@@ -939,7 +965,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
 
             // Build tag below phone
             div(classes: 'absolute -bottom-10 left-0 right-0 flex justify-center', [
-              span(classes: 'text-xs text-zinc-600 font-mono', [
+              span(classes: 'text-xs text-zinc-600 dark:text-zinc-400 font-mono', [
                 Component.text('Build: $_build • Platform: ${(_platform == "android" ? "Android" : "iOS")}'),
               ]),
             ]),
