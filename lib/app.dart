@@ -20,12 +20,14 @@ class App extends StatelessComponent {
       [
         ThemeManager(),
         const Header(),
-        Router(
-          routes: [
-            Route(path: '/', title: 'Home', builder: (context, state) => const HomePage()),
-            Route(path: '/config', title: 'Generator', builder: (context, state) => const GeneratorPage()),
-          ],
-        ),
+        div(classes: 'flex-1 overflow-hidden flex flex-col', [
+          Router(
+            routes: [
+              Route(path: '/', title: 'Home', builder: (context, state) => const HomePage()),
+              Route(path: '/config', title: 'Generator', builder: (context, state) => const GeneratorPage()),
+            ],
+          ),
+        ]),
       ],
     );
   }
@@ -35,14 +37,14 @@ class App extends StatelessComponent {
     ...EmbeddedUpdaterOverlay.styles,
     ...Header.styles,
     css('body').styles(
+      margin: Margin.zero,
+      color: Color('#18181b'),
       fontFamily: FontFamily('Plus Jakarta Sans, Inter, sans-serif'),
       backgroundColor: Color('white'),
-      color: Color('#18181b'),
-      margin: Margin.zero,
     ),
     css('.dark body').styles(
-      backgroundColor: Color('#09090b'),
       color: Color('#f4f4f5'),
+      backgroundColor: Color('#09090b'),
     ),
     css.import(
       'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap',

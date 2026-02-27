@@ -14,7 +14,21 @@ class Header extends StatelessComponent {
       classes:
           'flex justify-between items-center px-4 py-3 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-white/5',
       [
-        div(classes: 'w-9', []), // Empty div to keep nav centered or space evenly
+        Link(
+          to: '/',
+          child: div(classes: 'flex items-center gap-2 cursor-pointer group', [
+            div(
+              classes:
+                  'w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform',
+              [
+                i(classes: 'material-icons text-white text-[18px]', [Component.text('update')]),
+              ],
+            ),
+            span(classes: 'font-bold text-lg tracking-tight text-zinc-900 dark:text-white', [
+              Component.text('App Updater'),
+            ]),
+          ]),
+        ),
         nav(classes: 'flex items-center gap-1 bg-zinc-100 dark:bg-zinc-900 rounded-xl px-2 py-1.5 shadow-inner', [
           for (var route in [
             (label: 'Home', path: '/'),

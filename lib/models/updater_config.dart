@@ -17,6 +17,9 @@ class UpdaterOverlayConfig {
   final String? currentVersion;
   final String? endTime;
   final String? actionLabel;
+  final int? latestBuild;
+  final int? currentBuild;
+  final int? currentPatch;
 
   const UpdaterOverlayConfig({
     required this.type,
@@ -29,6 +32,9 @@ class UpdaterOverlayConfig {
     this.currentVersion,
     this.endTime,
     this.actionLabel,
+    this.latestBuild,
+    this.currentBuild,
+    this.currentPatch,
   });
 
   factory UpdaterOverlayConfig.killSwitch({required String message}) => UpdaterOverlayConfig(
@@ -52,6 +58,8 @@ class UpdaterOverlayConfig {
     required String releaseNotes,
     String? latestVersion,
     String? currentVersion,
+    int? latestBuild,
+    int? currentBuild,
   }) => UpdaterOverlayConfig(
     type: isForced ? UpdaterOverlayType.forcedUpdate : UpdaterOverlayType.flexibleUpdate,
     title: isForced ? "Required Update" : "New Update",
@@ -63,6 +71,8 @@ class UpdaterOverlayConfig {
     isPermanent: isForced,
     latestVersion: latestVersion,
     currentVersion: currentVersion,
+    latestBuild: latestBuild,
+    currentBuild: currentBuild,
     actionLabel: "Update Now",
   );
 
@@ -70,6 +80,8 @@ class UpdaterOverlayConfig {
     required String patchNotes,
     required bool isHotfix,
     int? patchNumber,
+    int? currentBuild,
+    int? currentPatch,
   }) {
     return UpdaterOverlayConfig(
       type: UpdaterOverlayType.shorebirdPatch,
@@ -79,6 +91,8 @@ class UpdaterOverlayConfig {
           : "A new optimization is ready to be applied. Download now for a better experience.",
       isPermanent: isHotfix,
       latestVersion: patchNumber?.toString(),
+      currentBuild: currentBuild,
+      currentPatch: currentPatch,
       actionLabel: "Download & Apply",
     );
   }

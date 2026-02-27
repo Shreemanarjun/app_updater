@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart';
 import 'package:jaspr/dom.dart';
 import 'package:jaspr_router/jaspr_router.dart';
+import '../components/footer.dart';
 
 class HomePage extends StatelessComponent {
   const HomePage({super.key});
@@ -57,6 +58,7 @@ class HomePage extends StatelessComponent {
           ),
         ]),
       ]),
+      const Footer(),
     ]);
   }
 

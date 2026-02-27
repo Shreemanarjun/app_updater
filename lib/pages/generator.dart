@@ -19,6 +19,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
   String _tab = 'global'; // 'global', 'android', 'ios'
   String _platform = 'android'; // Preview platform
   int _build = 7;
+  int _patch = 0;
 
   // ── Preview dimensions (phone shell + Flutter canvas)
   double _previewWidth = 375;
@@ -54,6 +55,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
   int _andPatchMax = 7;
   bool _andPatchHotfix = false;
   String _andPatchNotes = 'Critical bug fix for login issues.';
+  bool _andPatchEnabled = true;
   int _andForceBelowBuild = 6;
   int _andFlexibleBelowBuild = 250;
   String _andStoreUrl = 'https://play.google.com/store/apps/details?id=app.example';
@@ -68,6 +70,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
   int _iosPatchMax = 7;
   bool _iosPatchHotfix = false;
   String _iosPatchNotes = 'Performance optimizations.';
+  bool _iosPatchEnabled = true;
   int _iosForceBelowBuild = 6;
   int _iosFlexibleBelowBuild = 7;
   String _iosStoreUrl = 'https://apps.apple.com/app/id000000000';
@@ -93,6 +96,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
           maxAppBuild: _andPatchMax,
           hotfix: _andPatchHotfix,
           notes: _andPatchNotes,
+          enabled: _andPatchEnabled,
         ),
         update: UpdateConfig(
           forceBelowBuild: _andForceBelowBuild,
@@ -112,6 +116,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
           maxAppBuild: _iosPatchMax,
           hotfix: _iosPatchHotfix,
           notes: _iosPatchNotes,
+          enabled: _iosPatchEnabled,
         ),
         update: UpdateConfig(
           forceBelowBuild: _iosForceBelowBuild,
@@ -153,6 +158,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
     _andPatchMax = a.patch.maxAppBuild;
     _andPatchHotfix = a.patch.hotfix;
     _andPatchNotes = a.patch.notes;
+    _andPatchEnabled = a.patch.enabled;
     _andForceBelowBuild = a.update.forceBelowBuild;
     _andFlexibleBelowBuild = a.update.flexibleBelowBuild;
     _andStoreUrl = a.storeUrl;
@@ -166,6 +172,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
     _iosPatchMax = i.patch.maxAppBuild;
     _iosPatchHotfix = i.patch.hotfix;
     _iosPatchNotes = i.patch.notes;
+    _iosPatchEnabled = i.patch.enabled;
     _iosForceBelowBuild = i.update.forceBelowBuild;
     _iosFlexibleBelowBuild = i.update.flexibleBelowBuild;
     _iosStoreUrl = i.storeUrl;
@@ -178,41 +185,56 @@ class _GeneratorPageState extends State<GeneratorPage> {
     final platformConfig = _platform == 'android' ? _model.android : _model.ios;
     const locale = 'en';
 
+    // 1. Kill Switch (Top Priority)
     if (_model.global.killSwitch) {
       return UpdaterOverlayConfig.killSwitch(
         message: 'This application version is no longer supported. Please contact support.',
       );
     }
+
+    // 2. Maintenance Mode
     if (_model.global.maintenance.active) {
       return UpdaterOverlayConfig.maintenance(
         message: _model.global.maintenance.message[locale] ?? 'Under maintenance.',
         endTime: _model.global.maintenance.endTime,
       );
     }
-    final patch = platformConfig.patch;
-    if (_build >= patch.minAppBuild && _build <= patch.maxAppBuild) {
-      return UpdaterOverlayConfig.shorebird(
-        patchNotes: patch.notes,
-        isHotfix: patch.hotfix,
-        patchNumber: patch.number,
-      );
-    }
+
+    // 3. Forced Update (Binary replacement required)
     if (_build < platformConfig.update.forceBelowBuild) {
       return UpdaterOverlayConfig.update(
         isForced: true,
         storeUrl: platformConfig.storeUrl,
         releaseNotes: _model.global.releaseNotes[locale] ?? '',
-        currentVersion: '1.0.0',
         latestVersion: platformConfig.version.latest.semver,
+        currentVersion: platformConfig.version.recommended.semver,
+        latestBuild: platformConfig.version.latest.build,
+        currentBuild: _build,
       );
     }
+
+    // 4. Shorebird Patch (Hotfix or optimization for current binary)
+    final patch = platformConfig.patch;
+    if (patch.enabled && _build >= patch.minAppBuild && _build <= patch.maxAppBuild && _patch < patch.number) {
+      return UpdaterOverlayConfig.shorebird(
+        patchNotes: patch.notes,
+        isHotfix: patch.hotfix,
+        patchNumber: patch.number,
+        currentBuild: _build,
+        currentPatch: _patch,
+      );
+    }
+
+    // 5. Flexible Update (Optional binary upgrade)
     if (_build < platformConfig.update.flexibleBelowBuild) {
       return UpdaterOverlayConfig.update(
         isForced: false,
         storeUrl: platformConfig.storeUrl,
         releaseNotes: _model.global.releaseNotes[locale] ?? '',
-        currentVersion: '1.0.0',
         latestVersion: platformConfig.version.latest.semver,
+        currentVersion: platformConfig.version.recommended.semver,
+        latestBuild: platformConfig.version.latest.build,
+        currentBuild: _build,
       );
     }
     return null;
@@ -357,6 +379,7 @@ class _GeneratorPageState extends State<GeneratorPage> {
     var patchMax = os == 'android' ? _andPatchMax : _iosPatchMax;
     var patchHotfix = os == 'android' ? _andPatchHotfix : _iosPatchHotfix;
     var patchNotes = os == 'android' ? _andPatchNotes : _iosPatchNotes;
+    var patchEnabled = os == 'android' ? _andPatchEnabled : _iosPatchEnabled;
 
     var forceBelow = os == 'android' ? _andForceBelowBuild : _iosForceBelowBuild;
     var flexibleBelow = os == 'android' ? _andFlexibleBelowBuild : _iosFlexibleBelowBuild;
@@ -401,6 +424,12 @@ class _GeneratorPageState extends State<GeneratorPage> {
       _section(
         title: 'Shorebird Patch',
         children: [
+          _toggle(
+            label: 'Enabled',
+            hint: 'Whether to show the Shorebird patch overlay on this platform.',
+            value: patchEnabled,
+            onChange: (v) => os == 'android' ? _andPatchEnabled = v : _iosPatchEnabled = v,
+          ),
           div(classes: 'grid grid-cols-2 gap-3', [
             _field(
               label: 'Patch Number',
@@ -882,6 +911,30 @@ class _GeneratorPageState extends State<GeneratorPage> {
                   classes:
                       'w-6 h-6 flex items-center justify-center text-zinc-900 dark:text-white bg-zinc-200 dark:bg-white/5 hover:bg-zinc-300 dark:bg-white/10 rounded border-0 cursor-pointer',
                   events: {'click': (e) => setState(() => _build = (_build + 1).clamp(0, 999))},
+                  [
+                    i(classes: 'material-icons text-[14px]', [Component.text('add')]),
+                  ],
+                ),
+              ]),
+
+              // ── Patch control
+              div(classes: 'flex items-center gap-2 bg-zinc-100 dark:bg-zinc-900 pl-3 pr-1 py-1 rounded-lg', [
+                span(classes: 'text-xs text-zinc-500 dark:text-zinc-400', [Component.text('Patch:')]),
+                button(
+                  classes:
+                      'w-6 h-6 flex items-center justify-center text-zinc-900 dark:text-white bg-zinc-200 dark:bg-white/5 hover:bg-zinc-300 dark:bg-white/10 rounded border-0 cursor-pointer',
+                  events: {'click': (e) => setState(() => _patch = (_patch - 1).clamp(0, 999))},
+                  [
+                    i(classes: 'material-icons text-[14px]', [Component.text('remove')]),
+                  ],
+                ),
+                span(classes: 'text-xs text-zinc-900 dark:text-white font-mono w-6 text-center', [
+                  Component.text('$_patch'),
+                ]),
+                button(
+                  classes:
+                      'w-6 h-6 flex items-center justify-center text-zinc-900 dark:text-white bg-zinc-200 dark:bg-white/5 hover:bg-zinc-300 dark:bg-white/10 rounded border-0 cursor-pointer',
+                  events: {'click': (e) => setState(() => _patch = (_patch + 1).clamp(0, 999))},
                   [
                     i(classes: 'material-icons text-[14px]', [Component.text('add')]),
                   ],

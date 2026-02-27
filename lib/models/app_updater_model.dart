@@ -105,6 +105,7 @@ class PatchConfig {
   final int maxAppBuild;
   final bool hotfix;
   final String notes;
+  final bool enabled;
 
   PatchConfig({
     required this.number,
@@ -112,6 +113,7 @@ class PatchConfig {
     required this.maxAppBuild,
     required this.hotfix,
     required this.notes,
+    this.enabled = true,
   });
 
   factory PatchConfig.fromJson(Map<String, dynamic> json) {
@@ -121,6 +123,7 @@ class PatchConfig {
       maxAppBuild: json['max_app_build'],
       hotfix: json['hotfix'],
       notes: json['notes'],
+      enabled: json['enabled'] ?? true,
     );
   }
 
@@ -130,6 +133,7 @@ class PatchConfig {
     'max_app_build': maxAppBuild,
     'hotfix': hotfix,
     'notes': notes,
+    'enabled': enabled,
   };
 }
 

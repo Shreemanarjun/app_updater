@@ -243,9 +243,7 @@ class _DialogOverlay extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          if (config.currentVersion != null &&
-              config.latestVersion != null &&
-              config.type != UpdaterOverlayType.shorebirdPatch) ...[
+          if (config.currentBuild != null || config.latestBuild != null) ...[
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
@@ -255,21 +253,55 @@ class _DialogOverlay extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    config.currentVersion!,
-                    style: const TextStyle(color: Color(0xFF71717A), fontSize: 11),
+                  // From
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'CURRENT',
+                        style: TextStyle(color: Color(0xFF71717A), fontSize: 8, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        config.type == UpdaterOverlayType.shorebirdPatch
+                            ? "Build ${config.currentBuild ?? '?'}${config.currentPatch != null && config.currentPatch! > 0 ? ' (Patch ${config.currentPatch})' : ''}"
+                            : config.currentVersion != null
+                            ? "v${config.currentVersion} (${config.currentBuild ?? '?'})"
+                            : "Build ${config.currentBuild ?? '?'}",
+                        style: const TextStyle(color: Color(0xFFA1A1AA), fontSize: 11, fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
                   const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Icon(Icons.arrow_forward, size: 12, color: Color(0xFF52525B)),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Icon(Icons.arrow_forward, size: 14, color: Color(0xFF52525B)),
                   ),
-                  Text(
-                    config.latestVersion!,
-                    style: const TextStyle(
-                      color: Color(0xFF3B82F6),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
+                  // To
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        config.type == UpdaterOverlayType.shorebirdPatch ? 'PATCH' : 'TARGET',
+                        style: TextStyle(
+                          color: iconColor.withValues(alpha: 0.8),
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        config.type == UpdaterOverlayType.shorebirdPatch
+                            ? "Build ${config.currentBuild ?? '?'}${config.latestVersion != null ? ' (Patch ${config.latestVersion})' : ''}"
+                            : "v${config.latestVersion} (${config.latestBuild ?? '?'})",
+                        style: TextStyle(
+                          color: iconColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
